@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Clean My Room!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Background Layer -->
+        <div id="background-layer"></div>
+
+        <!-- Timer UI -->
+        <div id="timer-ui" class="hidden">
+            <span id="timer-text">⏱️ 10s</span>
+        </div>
+
+        <!-- Game Objects Container -->
+        <div id="objects-container"></div>
+
+        <!-- Sparkles Container -->
+        <div id="sparkles-container"></div>
+
+        <!-- Overlays -->
+        <div id="overlay-start" class="overlay">
+            <div class="overlay-card border-yellow">
+                <h1 class="title text-yellow">Guests are coming!</h1>
+                <p class="subtitle">Let's clean the room fast!</p>
+                <button id="start-button" class="btn-green">START!</button>
+            </div>
+        </div>
+
+        <div id="overlay-success" class="overlay hidden">
+            <div class="overlay-card border-green">
+                <h1 class="title text-green">Yay! 🎉</h1>
+                <p class="subtitle text-green-dark">Room is ready!</p>
+                <div class="stars">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="overlay-partial" class="overlay hidden">
+            <div class="overlay-card border-red">
+                <h1 class="title text-red">Knock Knock!🚪</h1>
+                <p class="subtitle">Oh! Guests are here already...</p>
+            </div>
+        </div>
+
+        <!-- Success Glow -->
+        <div id="success-glow" class="hidden"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
