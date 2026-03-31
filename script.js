@@ -298,7 +298,7 @@ function handleTap(id, e) {
 
         if (cleanedCount === totalObjects) {
             clearInterval(timerInterval);
-            setGameState('SUCCESS');
+            setTimeout(() => setGameState('SUCCESS'), 600);
         }
     }, 800);
 }
