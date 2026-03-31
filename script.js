@@ -36,7 +36,7 @@ let objects = [
     { id: '1', type: 'clothes', x: '70%', y: '46%', cleaned: false, animating: false, folded: false },
     { id: '2', type: 'books', x: '20%', y: '48%', cleaned: false, animating: false, stacked: false },
     { id: '3', type: 'toys', x: '25%', y: '72%', cleaned: false, animating: false, stored: false },
-    { id: '4', type: 'wrappers', x: '100%', y: '75%', cleaned: false, animating: false },
+    { id: '4', type: 'wrappers', x: '90%', y: '70%', cleaned: false, animating: false },
 ];
 const totalObjects = objects.length;
 
