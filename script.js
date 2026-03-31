@@ -15,7 +15,8 @@ const sounds = {
     start: new Audio('assets/start.mp3'),
     success: new Audio('assets/result.mp3'),
     knock: new Audio('assets/door-knock.mp3'),
-    tap: new Audio('assets/tap.mp3') // optional if you have it
+    tap: new Audio('assets/tap.mp3'),
+    transition: new Audio('assets/transition.mp3')
 };
 
 // setup
@@ -41,10 +42,27 @@ let objects = [
 const totalObjects = objects.length;
 
 
+const frameCache = {};
+function preloadFrames() {
+    const allFrames = [
+        'assets/books-clean-1.webp', 'assets/books-clean-2.webp', 'assets/books-clean-3.webp',
+        'assets/books-clean-4.webp', 'assets/books-clean-5.webp',
+        'assets/toys-clean-1.webp', 'assets/toys-clean-2.webp', 'assets/toys-clean-3.webp',
+        'assets/toys-clean-4.webp', 'assets/toys-clean-5.webp', 'assets/toys-clean-6.webp',
+        'assets/clothes-fold-1.webp', 'assets/clothes-fold-2.webp',
+        'assets/clothes-fold-3.webp', 'assets/clothes-fold-4.webp',
+    ];
+    allFrames.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        frameCache[src] = img;
+    });
+}
+
 function init() {
     updateBackground();
     startAmbientSparkles();
-    // renderObjects();
+    preloadFrames();
     objectsContainer.innerHTML = '';
     startButton.addEventListener('click', startGame);
 }
@@ -68,20 +86,20 @@ function updateBackground() {
     let bgUrl = '';
     switch (gameState) {
         case 'START':
-            bgUrl = "url('assets/start-bg.png')";
+            bgUrl = "url('assets/start-bg.webp')";
             backgroundLayer.style.filter = 'none';
             backgroundLayer.style.backdropFilter = 'blur(3px)';
             break;
         case 'SUCCESS':
-            bgUrl = "url('assets/end-bg.png')";
+            bgUrl = "url('assets/end-bg.webp')";
             backgroundLayer.style.filter = 'none';
             break;
         case 'PARTIAL':
-            bgUrl = "url('assets/room-bg.png')";
+            bgUrl = "url('assets/room-bg.webp')";
             backgroundLayer.style.filter = 'brightness(0.5) grayscale(0.5)';
             break;
         default:
-            bgUrl = "url('assets/room-bg.png')";
+            bgUrl = "url('assets/room-bg.webp')";
             backgroundLayer.style.filter = 'none';
     }
     backgroundLayer.style.backgroundImage = bgUrl;
@@ -113,16 +131,16 @@ function renderObjects() {
 
             const img = document.createElement('img');
             if (obj.type === 'clothes' && obj.folded) {
-                img.src = 'assets/clothes-fold-4.png';
+                img.src = 'assets/clothes-fold-4.webp';
 
             } else if (obj.type === 'books' && obj.stacked) {
-                img.src = 'assets/books-clean-5.png';
+                img.src = 'assets/books-clean-5.webp';
 
             } else if (obj.type === 'toys' && obj.stored) {
-                img.src = 'assets/toys-clean-6.png';
+                img.src = 'assets/toys-clean-6.webp';
             }
             else {
-                img.src = `assets/${obj.type}-messy.png`;
+                img.src = `assets/${obj.type}-messy.webp`;
             }
             img.alt = obj.type;
             img.onerror = () => { img.src = 'https://picsum.photos/seed/toy/200'; };
@@ -197,6 +215,7 @@ function handleTap(id, e) {
     createSparkle(clientX, clientY);
     playSound('tap');
 
+
     obj.animating = true;
     // cleanedCount++;
     renderObjects();
@@ -210,42 +229,43 @@ function handleTap(id, e) {
 
             if (obj.type === 'clothes') {
                 frames = [
-                    'assets/clothes-fold-1.png',
-                    'assets/clothes-fold-2.png',
-                    'assets/clothes-fold-3.png',
-                    'assets/clothes-fold-4.png'
+                    'assets/clothes-fold-1.webp',
+                    'assets/clothes-fold-2.webp',
+                    'assets/clothes-fold-3.webp',
+                    'assets/clothes-fold-4.webp'
                 ];
             }
 
             if (obj.type === 'books') {
                 frames = [
-                    'assets/books-clean-1.png',
-                    'assets/books-clean-2.png',
-                    'assets/books-clean-3.png',
-                    'assets/books-clean-4.png',
-                    'assets/books-clean-5.png'
+                    'assets/books-clean-1.webp',
+                    'assets/books-clean-2.webp',
+                    'assets/books-clean-3.webp',
+                    'assets/books-clean-4.webp',
+                    'assets/books-clean-5.webp'
                 ];
             }
 
             if (obj.type === 'toys') {
                 frames = [
-                    'assets/toys-clean-1.png',
-                    'assets/toys-clean-2.png',
-                    'assets/toys-clean-3.png',
-                    'assets/toys-clean-4.png',
-                    'assets/toys-clean-5.png',
-                    'assets/toys-clean-6.png'
+                    'assets/toys-clean-1.webp',
+                    'assets/toys-clean-2.webp',
+                    'assets/toys-clean-3.webp',
+                    'assets/toys-clean-4.webp',
+                    'assets/toys-clean-5.webp',
+                    'assets/toys-clean-6.webp'
                 ];
             }
 
-            let i = 0;
+            el.src = frames[0];
+            playSound('transition');
+            let i = 1;
             const interval = setInterval(() => {
                 el.src = frames[i];
+                playSound('transition');
                 i++;
-                if (i >= frames.length) {
-                    clearInterval(interval);
-                }
-            }, 120); // slightly faster than clothes = feels snappy
+                if (i >= frames.length) clearInterval(interval);
+            }, 120);
         }
     }
 
@@ -260,7 +280,7 @@ function handleTap(id, e) {
             // keep final folded frame
             const el = objectsContainer.querySelector(`[style*="${obj.x}"][style*="${obj.y}"] img`);
             if (el) {
-                el.src = 'assets/clothes-fold-4.png';
+                el.src = 'assets/clothes-fold-4.webp';
             }
 
         }
@@ -285,7 +305,7 @@ function handleTap(id, e) {
             // keep final frame
             const el = objectsContainer.querySelector(`[style*="${obj.x}"][style*="${obj.y}"] img`);
             if (el) {
-                el.src = 'assets/toys-clean-6.png';
+                el.src = 'assets/toys-clean-6.webp';
             }
         }
         else {
@@ -365,7 +385,12 @@ function createSparkle(x, y) {
 
 function playSound(type) {
     if (!sounds[type]) return;
-
+    if (type === 'transition') {
+        const clone = sounds.transition.cloneNode();
+        clone.volume = sounds.transition.volume || 1;
+        clone.play().catch(() => {});
+        return;
+    }
     sounds[type].currentTime = 0;
     sounds[type].play().catch(() => {});
 }
